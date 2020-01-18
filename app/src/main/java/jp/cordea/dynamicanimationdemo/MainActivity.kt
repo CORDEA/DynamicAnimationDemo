@@ -5,6 +5,10 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.dynamicanimation.animation.SpringForce
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.GroupieViewHolder
 import jp.cordea.dynamicanimationdemo.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -16,6 +20,29 @@ class MainActivity : AppCompatActivity() {
             R.layout.activity_main
         )
         setSupportActionBar(binding.toolbar)
+        binding.content.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.content.recyclerView.adapter = GroupAdapter<GroupieViewHolder>().apply {
+            addAll(
+                listOf(
+                    MainListItemViewModel(
+                        SpringForce.STIFFNESS_VERY_LOW,
+                        SpringForce.DAMPING_RATIO_NO_BOUNCY
+                    ),
+                    MainListItemViewModel(
+                        SpringForce.STIFFNESS_LOW,
+                        SpringForce.DAMPING_RATIO_LOW_BOUNCY
+                    ),
+                    MainListItemViewModel(
+                        SpringForce.STIFFNESS_MEDIUM,
+                        SpringForce.DAMPING_RATIO_MEDIUM_BOUNCY
+                    ),
+                    MainListItemViewModel(
+                        SpringForce.STIFFNESS_HIGH,
+                        SpringForce.DAMPING_RATIO_HIGH_BOUNCY
+                    )
+                ).map { MainListItem(it) }
+            )
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
