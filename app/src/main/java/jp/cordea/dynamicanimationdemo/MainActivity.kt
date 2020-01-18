@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         )
         setSupportActionBar(binding.toolbar)
         binding.content.recyclerView.layoutManager = LinearLayoutManager(this)
-        binding.content.recyclerView.adapter = GroupAdapter<GroupieViewHolder>().apply {
+        val adapter = GroupAdapter<GroupieViewHolder>().apply {
             addAll(
                 listOf(
                     MainListItemViewModel(
@@ -42,6 +42,14 @@ class MainActivity : AppCompatActivity() {
                     )
                 ).map { MainListItem(it) }
             )
+        }
+        binding.content.recyclerView.adapter = adapter
+
+        binding.fab.setOnClickListener {
+            (0 until adapter.itemCount)
+                .map { adapter.getItem(it) }
+                .filterIsInstance<MainListItem>()
+                .forEach { it.startAnimation() }
         }
     }
 
